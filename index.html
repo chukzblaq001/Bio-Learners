@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#18794e">
+  <meta name="description" content="Free offline Biology lessons and quizzes for Nigerian learners.">
+  <title>BIOLEARN — Biology, made easier</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="BIOLEARN home"><span class="brand-mark">B</span><span>BIOLEARN<small>Learn today. Grow tomorrow.</small></span></a>
+    <button id="installBtn" class="button button-light hidden" type="button">Install app</button>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">YOUR FREE BIOLOGY COMPANION</p>
+        <h1>Understand life.<br><span>One lesson at a time.</span></h1>
+        <p class="hero-copy">Study Biology, practise questions and track your progress — even when you're offline.</p>
+        <div class="hero-actions">
+          <button class="button" id="startLearningBtn" type="button">Explore lessons</button>
+          <button class="button button-outline" id="dailyQuizBtn" type="button">Take a quick quiz</button>
+        </div>
+        <p class="offline-note"><span class="status-dot"></span> Designed for offline learning after the first load</p>
+      </div>
+      <div class="hero-art" aria-label="Illustration of a plant growing from soil">
+        <div class="sun"></div><div class="leaf leaf-one"></div><div class="leaf leaf-two"></div>
+        <div class="stem"></div><div class="soil"></div>
+        <div class="art-label">LIFE IS AMAZING</div>
+      </div>
+    </section>
+
+    <section class="stats-grid" aria-label="Your learning progress">
+      <article class="stat-card"><span class="stat-icon">📘</span><div><strong id="lessonsDone">0</strong><span>Lessons completed</span></div></article>
+      <article class="stat-card"><span class="stat-icon">🎯</span><div><strong id="bestScore">—</strong><span>Best quiz score</span></div></article>
+      <article class="stat-card"><span class="stat-icon">🔖</span><div><strong id="savedCount">0</strong><span>Saved topics</span></div></article>
+    </section>
+
+
+    <section class="section tutor-section" id="tutorSection">
+      <div class="section-heading"><div><p class="eyebrow">YOUR STUDY PARTNER</p><h2>Ask the Biology Tutor</h2><p class="section-subtitle">Ask a question, get a simple explanation, or find a lesson to study.</p></div><span class="offline-pill"><span class="status-dot"></span> Offline tutor available</span></div>
+      <div class="tutor-layout">
+        <div class="tutor-welcome">
+          <div class="tutor-avatar">🧬</div>
+          <h3>Hello, Biology learner!</h3>
+          <p>I can help explain the Biology topics bundled in BIOLEARN, even without internet.</p>
+          <div class="tutor-suggestions">
+            <button type="button" class="suggestion-chip" data-prompt="Explain photosynthesis in simple words">Explain photosynthesis</button>
+            <button type="button" class="suggestion-chip" data-prompt="What is a cell?">What is a cell?</button>
+            <button type="button" class="suggestion-chip" data-prompt="Quiz me about genetics">Practise genetics</button>
+            <button type="button" class="suggestion-chip" data-prompt="Explain natural selection">Natural selection</button>
+          </div>
+        </div>
+        <div class="tutor-chat">
+          <div class="chat-topline"><span class="chat-live-dot"></span><strong>BIOLEARN Tutor</strong><span id="tutorModeLabel">Offline knowledge mode</span></div>
+          <div id="tutorMessages" class="tutor-messages" aria-live="polite">
+            <div class="chat-message tutor-message"><strong>Tutor</strong><p>Welcome! Ask me about cells, photosynthesis, ecology, genetics, evolution, human reproduction, biological molecules, membranes or conservation.</p></div>
+          </div>
+          <form id="tutorForm" class="tutor-form">
+            <label class="sr-only" for="tutorInput">Ask a Biology question</label>
+            <textarea id="tutorInput" rows="2" maxlength="800" placeholder="Ask a Biology question..." required></textarea>
+            <button class="button" type="submit" id="tutorSendBtn">Ask tutor ↑</button>
+          </form>
+          <p class="tutor-disclaimer">Offline answers use the lessons included in this starter app. They are not a substitute for checking your class notes or syllabus.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="learnSection">
+      <div class="section-heading"><div><p class="eyebrow">LEARNING LIBRARY</p><h2>Choose your level</h2></div><label class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search topics..." aria-label="Search topics"></label></div>
+      <div class="filters" id="levelFilters" aria-label="Filter by level"></div>
+      <div id="lessonGrid" class="lesson-grid"></div>
+      <p id="emptyMessage" class="empty-message hidden">No topics found. Try another search or level.</p>
+    </section>
+
+    <section class="section progress-panel">
+      <div><p class="eyebrow">KEEP GOING</p><h2>Your learning journey</h2><p>Progress is saved on this device using local storage.</p></div>
+      <div class="progress-track"><div id="progressBar" class="progress-fill"></div></div>
+      <p id="progressText" class="progress-text">0% of sample lessons completed</p>
+      <button id="resetProgressBtn" class="text-button" type="button">Reset my progress</button>
+    </section>
+    <footer><span class="brand-mini">BIOLEARN</span><span>Free learning for everyone · Built to work offline</span></footer>
+  </main>
+
+  <dialog id="lessonDialog" class="modal">
+    <div class="modal-header"><div><p class="eyebrow" id="modalLevel"></p><h2 id="modalTitle">Lesson title</h2></div><button class="icon-button" id="closeLessonBtn" aria-label="Close lesson">✕</button></div>
+    <div id="modalBody" class="lesson-body"></div>
+    <div class="modal-actions"><button id="bookmarkBtn" class="button button-outline" type="button">☆ Save topic</button><button id="markCompleteBtn" class="button" type="button">Mark complete</button><button id="startTopicQuizBtn" class="button button-dark" type="button">Take topic quiz</button></div>
+  </dialog>
+
+  <dialog id="quizDialog" class="modal quiz-modal">
+    <div class="modal-header"><div><p class="eyebrow">PRACTICE TIME</p><h2 id="quizTitle">Biology quiz</h2></div><button class="icon-button" id="closeQuizBtn" aria-label="Close quiz">✕</button></div>
+    <div id="quizBody"></div>
+  </dialog>
+  <script src="app.js" defer></script>
+</body>
+</html>
